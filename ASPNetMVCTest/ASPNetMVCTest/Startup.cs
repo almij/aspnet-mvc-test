@@ -35,13 +35,10 @@ namespace ASPNetMVCTest
             });
 
             var dbUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+            //for development
+            //dbUrl = @"postgres://dkxuqkiskbvith:7fb1d50ba36790282e72fedd4e98d0f5621971b0927603c7b66b5df1f0001243@ec2-54-217-235-87.eu-west-1.compute.amazonaws.com:5432/d782d2amg07hcs";
 
             bool isUrl = Uri.TryCreate(dbUrl, UriKind.Absolute, out Uri url);
-            //if (!isUrl)
-            //{
-            //    dbUrl = @"postgres://dkxuqkiskbvith:7fb1d50ba36790282e72fedd4e98d0f5621971b0927603c7b66b5df1f0001243@ec2-54-217-235-87.eu-west-1.compute.amazonaws.com:5432/d782d2amg07hcs";
-            //    Uri.TryCreate(dbUrl, UriKind.Absolute, out url);
-            //}
 
             Console.WriteLine("Host: " + url.Host);
             Console.WriteLine("Port: " + url.Port);
@@ -60,7 +57,6 @@ namespace ASPNetMVCTest
 
             services.Configure<IdentityOptions>(options =>
             {
-                // Default Password settings.
                 options.Password.RequireDigit = true;
                 options.Password.RequireLowercase = true;
                 options.Password.RequireNonAlphanumeric = false;
