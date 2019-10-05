@@ -34,9 +34,25 @@ namespace ASPNetMVCTest
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+            var dbUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+
+            bool isUrl = Uri.TryCreate(dbUrl, UriKind.Absolute, out Uri url);
+            //if (!isUrl)
+            //{
+            //    dbUrl = @"postgres://dkxuqkiskbvith:7fb1d50ba36790282e72fedd4e98d0f5621971b0927603c7b66b5df1f0001243@ec2-54-217-235-87.eu-west-1.compute.amazonaws.com:5432/d782d2amg07hcs";
+            //    Uri.TryCreate(dbUrl, UriKind.Absolute, out url);
+            //}
+
+            Console.WriteLine("Host: " + url.Host);
+            Console.WriteLine("Port: " + url.Port);
+            Console.WriteLine("Database: " + url.LocalPath.Substring(1));
+            Console.WriteLine("Username: " + url.UserInfo.Split(':')[0]);
+            Console.WriteLine("Password: " + url.UserInfo.Split(':')[1]);
+            var connectionString = $"host={url.Host};username={url.UserInfo.Split(':')[0]};password={url.UserInfo.Split(':')[1]};database={url.LocalPath.Substring(1)};pooling=true;SSL Mode=Require;TrustServerCertificate=True;";
+            services.AddEntityFrameworkNpgsql()
+                .AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
+
+
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -46,16 +62,16 @@ namespace ASPNetMVCTest
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            //if (env.IsDevelopment())
-            //{
+            if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-            //}
-            //else
-            //{
-            //    app.UseExceptionHandler("/Home/Error");
-            //    app.UseHsts();
-            //}
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
+            }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

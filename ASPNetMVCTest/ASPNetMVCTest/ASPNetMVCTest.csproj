@@ -1,13 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <UserSecretsId>aspnet-ASPNetMVCTest-D5E009DF-C031-4005-94ED-4CC1618D6C31</UserSecretsId>
+    <UserSecretsId>aspnet-ASPNetMVCTest-F57C3542-9715-4F87-B0BF-565CF924A59B</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.1.0" />
   </ItemGroup>
 
 </Project>
